@@ -4,38 +4,45 @@ type Request @model {
     description: String!
     quantity: String!
     status: Int
-    createdAt: DateTime! @rename(attribute: "created_at")
-    updatedAt: DateTime! @rename(attribute: "updated_at")
+    createdAt: DateTime!
+        @rename(attribute: "created_at")
+    updatedAt: DateTime!
+        @rename(attribute: "updated_at")
     order: Order! @hasOne
     user: User! @belongsTo
 }
 
 input CreateRequestInput {
-    description: String! @rules(
-        apply: ["required"],
-        messages: { required: "El campo es requerido"}
-    )
-    quantity: String! @rules(
-        apply: ["required"],
-        messages: { required: "El campo es requerido"}
-    )
-    order: ID! @globalId(decode: "ID") @rules(
-        apply: ["required"],
-        messages: { required: "El campo es requerido"}
-    )
+    description: String!
+        @rules(
+            apply: ["required"],
+            messages: { required: "El campo es requerido"}
+        )
+    quantity: String!
+        @rules(
+            apply: ["required"],
+            messages: { required: "El campo es requerido"}
+        )
+    order: ID! @globalId(decode: "ID")
+        @rules(
+            apply: ["required"],
+            messages: { required: "El campo es requerido"}
+        )
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
     requests(
-        order_id: ID! @globalId(decode: "ID") @eq @rules(
-            apply: ["required"],
-            messages: { required: "El campo es requerido"}
-        )
+        order_id: ID!
+            @globalId(decode: "ID")
+            @eq
+            @rules(
+                apply: ["required"],
+                messages: { required: "El campo es requerido"}
+            )
     ): [Request!]! @all
 }
 
 extend type Mutation @middleware(checks: ["auth:api"]) {
-    createRequest(input: CreateRequestInput! @spread): Request @field(
-        resolver: "RequestMutator@create"
-    )
+    createRequest(input: CreateRequestInput! @spread): Request
+        @field(resolver: "RequestMutator@create")
 }

@@ -5,9 +5,12 @@ type User @model {
     name: String!
     password: String!
     type: Int!
-    createdAt: DateTime! @rename(attribute: "created_at")
-    updatedAt: DateTime! @rename(attribute: "updated_at")
+    createdAt: DateTime!
+        @rename(attribute: "created_at")
+    updatedAt: DateTime!
+        @rename(attribute: "updated_at")
     requests: [Request!]! @hasMany
+    orders: [Order!]! @hasMany
 }
 
 enum UserType {

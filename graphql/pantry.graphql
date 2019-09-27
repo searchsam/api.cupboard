@@ -2,8 +2,10 @@
 type Pantry @model {
     id: ID!
     status: Int!
-    createdAt: DateTime! @rename(attribute: "created_at")
-    updatedAt: DateTime! @rename(attribute: "updated_at")
+    createdAt: DateTime!
+        @rename(attribute: "created_at")
+    updatedAt: DateTime!
+        @rename(attribute: "updated_at")
     order: Order! @belongsTo
 }
 
