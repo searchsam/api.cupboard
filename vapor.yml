@@ -1,0 +1,35 @@
+id: 2459
+name: cupboard
+separate-vendor: true
+
+environments:
+  production:
+    cache: nerdify
+    cli-memory: 512
+    database: nerdify
+    domain: cupboard.getnerdify.com
+    memory: 1024
+
+    build:
+      - "composer install --no-dev --classmap-authoritative"
+      - "php artisan event:cache"
+
+    deploy:
+      - "php artisan migrate --force"
+      - "php artisan lighthouse:clear-cache"
+      - "php artisan passport:install"
+
+  staging:
+    cache: nerdify
+    cli-memory: 512
+    database: nerdify
+    memory: 1024
+
+    build:
+      - "composer install --classmap-authoritative"
+      - "php artisan event:cache"
+
+    deploy:
+      - "php artisan migrate --force"
+      - "php artisan lighthouse:clear-cache"
+      - "php artisan passport:install"

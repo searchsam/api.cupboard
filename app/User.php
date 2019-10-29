@@ -11,6 +11,12 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    /**
+     * user type
+     *
+     * @var int
+     */
+    const CLIENT = 2;
     const ADMIN = 1;
     const SUPERADMIN = 0;
 
@@ -18,7 +24,7 @@ class User extends Authenticatable
      * {@inheritdoc}
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'type'
     ];
 
     /**

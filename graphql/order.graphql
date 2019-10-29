@@ -1,4 +1,6 @@
-""" Order Model """
+"""
+Order Model
+"""
 type Order @model {
     id: ID!
     " Order name "
@@ -7,70 +9,67 @@ type Order @model {
     status: Int!
     " Order deadline date "
     deadline: DateTime!
-    createdAt: DateTime!
-        @rename(attribute: "created_at")
-    updatedAt: DateTime!
-        @rename(attribute: "updated_at")
-    " Pantry relation "
-    pantry: Pantry! @hasOne
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
     " Request relation "
     requests: [Request!]! @hasMany
     " User relation "
     user: User! @belongsTo
 }
 
-""" Enun Order Status Type """
+"""
+Enun Order Status Type
+"""
 enum OrderStatus {
     COMPLETED @enum(value: 0)
     ACTIVE @enum(value: 1)
 }
 
-""" Order Input Type """
+"""
+Order Input Type
+"""
 input CreateOrderInput {
     " Order name "
     name: String!
         @rules(
-            apply: ["required"],
-            messages: { required: "El campo es requerido."}
+            apply: ["required"]
+            messages: { required: "El campo es requerido." }
         )
     " Order deadline date "
     deadline: Date!
         @rules(
-            apply: ["required", "date"],
+            apply: ["required", "date"]
             messages: {
-                required: "El campo es requerido.",
+                required: "El campo es requerido."
                 date: "No es una fecha valida."
             }
         )
 }
 
-""" Update Order Input Type """
+"""
+Update Order Input Type
+"""
 input UpdateOrderInput {
     id: ID!
+        @globalId(decode: "ID")
         @rules(
-            apply: ["required"],
-            messages: { required: "El campo es requerido."}
+            apply: ["required"]
+            messages: { required: "El campo es requerido." }
         )
     " Order name "
     name: String!
         @rules(
-            apply: ["required"],
-            messages: { required: "El campo es requerido."}
+            apply: ["required"]
+            messages: { required: "El campo es requerido." }
         )
     " Order deadline date "
     deadline: Date!
         @rules(
-            apply: ["required", "date"],
+            apply: ["required", "date"]
             messages: {
-                required: "El campo es requerido.",
+                required: "El campo es requerido."
                 date: "No es una fecha valida."
             }
-        )
-    " Order status "
-    status: Int!
-        @rules(
-            apply: ["required"],
-            messages: { required: "El campo es requerido."}
         )
 }
 
@@ -83,19 +82,25 @@ extend type Query {
             @globalId(decode: "ID")
             @eq
             @rules(
-                apply: ["required"],
-                messages: { required: "El campo es requerido"}
+                apply: ["required"]
+                messages: { required: "El campo es requerido" }
             )
     ): Order! @find
 }
 
-
 extend type Mutation @middleware(checks: ["auth:api"]) {
     " Create order "
-    createOrder(input: CreateOrderInput! @spread): Order!
-        @can(ability: "create", model: "Order")
+    createOrder(input: CreateOrderInput! @spread): Order
+        @can(ability: "create")
         @field(resolver: "OrderMutator@create")
+
     " Update Order "
-    updateOrder(input: UpdateOrderInput! @spread): Order!
-        @update
+    updateOrder(input: UpdateOrderInput! @spread): Order
+        @can(ability: "update", find: "id")
+        @field(resolver: "OrderMutator@update")
+
+    " Shop Order "
+    shopOrder(id: ID! @globalId(decode: "ID") @eq): Order
+        @can(ability: "update", find: "id")
+        @field(resolver: "OrderMutator@shop")
 }

@@ -1,13 +1,17 @@
-""" Ordering Clause """
-input OrderByClause{
-    " Field to be ordered "
-    field: String!
-    " Order type "
-    order: SortOrder!
+"""
+ Ordering Clause
+"""
+input OrderByClause {
+  " Field to be ordered "
+  field: String!
+  " Order type "
+  order: SortOrder!
 }
 
-""" Order Enum Type """
+"""
+ Order Enum Type
+"""
 enum SortOrder {
-    ASC
-    DESC
+  ASC
+  DESC
 }

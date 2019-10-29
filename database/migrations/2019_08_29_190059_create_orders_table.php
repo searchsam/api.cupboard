@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePantriesTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class CreatePantriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pantries', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->tinyInteger('status');
-            $table->unsignedBigInteger('order_id');
-            $table->foreign('order_id')
+            $table->dateTime('deadline');
+            $table->string('name');
+            $table->tinyInteger('status')
+                ->default('1');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('orders')
+                ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->timestamps();
@@ -33,6 +36,6 @@ class CreatePantriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pantries');
+        Schema::dropIfExists('orders');
     }
 }
