@@ -1,3 +1,2 @@
-# API.CupBoard
+# Initial page
 
-Simple api for simple database cupboard storage.
