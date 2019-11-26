@@ -1,0 +1,35 @@
+name: CI
+
+on:
+ push:
+   branches:
+     - develop
+     - master
+
+jobs:
+ build:
+   runs-on: ubuntu-latest
+
+   steps:
+     - uses: actions/checkout@master
+     - name: Installing Vapor CLI
+       run: composer global require laravel/vapor-cli
+
+     - name: Deploy to Vapor
+       env:
+         VAPOR_API_TOKEN: ${{ secrets.VAPOR_API_TOKEN }}
+       run: |
+         ENVIRONMENT=$([ $GITHUB_REF == 'refs/heads/master' ] && echo "production" || echo "staging")
+         echo $GITHUB_SHA > github_sha.txt
+         ~/.composer/vendor/bin/vapor secret $ENVIRONMENT --name=GITHUB_SHA --file=github_sha.txt
+         ~/.composer/vendor/bin/vapor deploy $ENVIRONMENT --commit=$GITHUB_SHA
+     - name: Tell Sentry about our release
+       env:
+         SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+         SENTRY_ORG: nerdify
+       run: |
+         ENVIRONMENT=$([ $GITHUB_REF == 'refs/heads/master' ] && echo "production" || echo "staging")
+         curl -sL https://sentry.io/get-cli/ | bash
+         sentry-cli releases new -p cupboard-back-end $GITHUB_SHA
+         sentry-cli releases set-commits --auto $GITHUB_SHA
+         sentry-cli releases deploys $GITHUB_SHA new -e $ENVIRONMENT

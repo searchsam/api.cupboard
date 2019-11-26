@@ -10,7 +10,7 @@ use App\User;
 use App\Notifications\OrderCreated;
 use Illuminate\Support\Facades\Notification;
 
-class SendCreatedOrderMessage
+class SendCreatedOrderMessage implements ShouldQueue
 {
     /**
      * Create the event listener.

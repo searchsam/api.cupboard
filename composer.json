@@ -15,9 +15,12 @@
         "laravel/framework": "^6.0",
         "laravel/passport": "^7.4",
         "laravel/tinker": "^1.0",
+        "laravel/vapor-core": "^2.2",
         "mll-lab/laravel-graphql-playground": "^1.1",
         "nuwave/lighthouse": "^4.5",
-        "predis/predis": "^1.1"
+        "predis/predis": "^1.1",
+        "pusher/pusher-php-server": "^4.1",
+        "sentry/sentry-laravel": "1.4.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('BROADCAST_DRIVER', 'null'),
+    'default' => env('BROADCAST_DRIVER', 'pusher'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,9 +38,6 @@ return [
             'options' => [
                 'cluster' => env('PUSHER_APP_CLUSTER', null),
                 'useTLS' => true,
-                // 'host' => '127.0.0.1',
-                'port' => 8001,
-                // 'scheme' => 'http'
             ],
         ],
 

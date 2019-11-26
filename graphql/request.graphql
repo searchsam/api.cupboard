@@ -1,104 +1,90 @@
 type Request @model {
-    id: ID!
-    description: String!
-    quantity: String!
-    status: Int
-    createdAt: DateTime! @rename(attribute: "created_at")
-    updatedAt: DateTime! @rename(attribute: "updated_at")
-    order: Order! @hasOne
-    user: User! @belongsTo
-    pantry: Pantry! @hasOne
+  id: ID!
+  description: String!
+  quantity: String!
+  status: Int
+  createdAt: DateTime! @rename(attribute: "created_at")
+  updatedAt: DateTime! @rename(attribute: "updated_at")
+  order: Order! @hasOne
+  user: User! @belongsTo
+  pantry: Pantry! @hasOne
 }
 
 """
 Enun Request Status Type
 """
 enum RequestStatus {
-    REJECT @enum(value: 0)
-    APROVE @enum(value: 1)
-    WAITING @enum(value: 2)
+  REJECT @enum(value: 0)
+  APROVE @enum(value: 1)
+  WAITING @enum(value: 2)
 }
 
 input CreateRequestInput {
-    description: String!
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido" }
-        )
-    quantity: String!
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido" }
-        )
-    order_id: ID!
-        @globalId(decode: "ID")
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido" }
-        )
+  description: String!
+    @rules(apply: ["required"], messages: { required: "El campo es requerido" })
+  quantity: String!
+    @rules(apply: ["required"], messages: { required: "El campo es requerido" })
+  order_id: ID!
+    @globalId(decode: "ID")
+    @rules(apply: ["required"], messages: { required: "El campo es requerido" })
 }
 
 input UpdateRequestInput {
-    id: ID!
-        @globalId(decode: "ID")
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido" }
-        )
-    description: String!
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido" }
-        )
-    quantity: String!
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido" }
-        )
+  id: ID!
+    @globalId(decode: "ID")
+    @rules(apply: ["required"], messages: { required: "El campo es requerido" })
+  description: String!
+    @rules(apply: ["required"], messages: { required: "El campo es requerido" })
+  quantity: String!
+    @rules(apply: ["required"], messages: { required: "El campo es requerido" })
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-    requests(
-        order_id: ID!
-            @globalId(decode: "ID")
-            @eq
-            @rules(
-                apply: ["required"]
-                messages: { required: "El campo es requerido" }
-            )
-        orderBy: [OrderByClause!] @orderBy
-    ): [Request!]! @all
+  requests(
+    order_id: ID!
+      @globalId(decode: "ID")
+      @eq
+      @rules(
+        apply: ["required"]
+        messages: { required: "El campo es requerido" }
+      )
+    orderBy: [OrderByClause!] @orderBy
+  ): [Request!]! @all
 }
 
 extend type Mutation @middleware(checks: ["auth:api"]) {
-    createRequest(input: CreateRequestInput! @spread): Request
-        @field(resolver: "RequestMutator@create")
+  createRequest(input: CreateRequestInput! @spread): Request
+    @field(resolver: "RequestMutator@create")
 
-    updateRequest(input: UpdateRequestInput! @spread): Request
-        @can(ability: "update", find: "id")
-        @field(resolver: "RequestMutator@update")
+  updateRequest(input: UpdateRequestInput! @spread): Request
+    @can(ability: "update", find: "id")
+    @field(resolver: "RequestMutator@update")
 
-    denyRequest(
-        id: ID!
-            @globalId(decode: "ID")
-            @eq
-            @rules(
-                apply: ["required"]
-                messages: { required: "El campo es requerido" }
-            )
-    ): Request
-        @can(ability: "update", find: "id")
-        @field(resolver: "RequestMutator@deny")
+  denyRequest(
+    id: ID!
+      @globalId(decode: "ID")
+      @eq
+      @rules(
+        apply: ["required"]
+        messages: { required: "El campo es requerido" }
+      )
+  ): Request
+    @can(ability: "update", find: "id")
+    @field(resolver: "RequestMutator@deny")
 
-    approveRequest(
-        id: ID!
-            @globalId(decode: "ID")
-            @eq
-            @rules(
-                apply: ["required"]
-                messages: { required: "El campo es requerido" }
-            )
-    ): Request
-        @can(ability: "update", find: "id")
-        @field(resolver: "RequestMutator@approve")
+  approveRequest(
+    id: ID!
+      @globalId(decode: "ID")
+      @eq
+      @rules(
+        apply: ["required"]
+        messages: { required: "El campo es requerido" }
+      )
+  ): Request
+    @can(ability: "update", find: "id")
+    @field(resolver: "RequestMutator@approve")
+}
+
+extend type Subscription {
+  requestCreated(order_id: ID!): Request
 }

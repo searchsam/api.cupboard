@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Pantry;
 
-class FillPantry
+class FillPantry implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -28,14 +28,11 @@ class FillPantry
      */
     public function handle(ShopOrder $event)
     {
-        $requests = $event->order->requests()->approved()->get();
+        $requests = $event->order->requests()->approved()
+            ->select('id as request_id', 'quantity as existence')
+            ->get()
+            ->toArray();
 
-        $requests->each(function ($request)
-        {
-            Pantry::create([
-                'existence' => $request->quantity,
-                'request_id' => $request->id
-            ]);
-        });
+        $event->order->pantry()->createMany($requests);
     }
 }

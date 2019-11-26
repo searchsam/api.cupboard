@@ -10,7 +10,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use App\Mail\NewOrderCreated as Mailable;
 use App\Order;
 
-class OrderCreated extends Notification
+class OrderCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -46,7 +46,7 @@ class OrderCreated extends Notification
      * Get the mail representation of the notification.
      *
      * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return App\Mail\NewOrderCreated as Mailable
      */
     public function toMail($notifiable)
     {
