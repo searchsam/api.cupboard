@@ -2,30 +2,27 @@
 
 namespace App\GraphQL\Mutations;
 
-use App\Exceptions\CustomException;
-use GraphQL\Type\Definition\ResolveInfo;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-
-use Nuwave\Lighthouse\Execution\Utils\Subscription;
 use App\Request;
+use Nuwave\Lighthouse\Execution\Utils\Subscription;
 
 class RequestMutator
 {
+
     /**
-     * @param $rootValue
+     * @param       $rootValue
      * @param array $args
      * @return mixed
      */
     public function create($rootValue, array $args)
     {
         $description = $args['description'];
-        $quantity = $args['quantity'];
         $orderId = $args['order_id'];
+        $quantity = $args['quantity'];
 
         $request = auth()->user()->requests()->create([
             'description' => $description,
-            'quantity' => $quantity,
-            'order_id' => $orderId
+            'order_id'    => $orderId,
+            'quantity'    => $quantity,
         ])->fresh();
 
         Subscription::broadcast('requestCreated', $request);
@@ -34,7 +31,7 @@ class RequestMutator
     }
 
     /**
-     * @param $rootValue
+     * @param       $rootValue
      * @param array $args
      * @return mixed
      */
@@ -47,12 +44,12 @@ class RequestMutator
         return tap(Request::find($requestId))
             ->update([
                 'description' => $description,
-                'quantity' => $quantity,
+                'quantity'    => $quantity,
             ]);
     }
 
     /**
-     * @param $rootValue
+     * @param       $rootValue
      * @param array $args
      * @return mixed
      */
@@ -65,7 +62,7 @@ class RequestMutator
     }
 
     /**
-     * @param $rootValue
+     * @param       $rootValue
      * @param array $args
      * @return mixed
      */

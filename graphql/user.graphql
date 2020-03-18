@@ -1,28 +1,28 @@
 type User @model {
-  id: ID! @globalId
-  email: String!
-  name: String!
-  type: Int!
-  createdAt: DateTime! @rename(attribute: "created_at")
-  updatedAt: DateTime! @rename(attribute: "updated_at")
-  requests: [Request!]! @hasMany
-  orders: [Order!]! @hasMany
+    id: ID! @globalId
+    email: String!
+    name: String!
+    type: Int!
+    createdAt: DateTime! @rename(attribute: "created_at")
+    updatedAt: DateTime! @rename(attribute: "updated_at")
+    requests: [Request!]! @hasMany
+    orders: [Order!]! @hasMany
 }
 
 enum UserType {
-  SUPERUSER @enum(value: 0)
-  ADMIN @enum(value: 1)
-  CLIENT @enum(value: 2)
+    SUPERUSER @enum(value: 0)
+    ADMIN @enum(value: 1)
+    CLIENT @enum(value: 2)
 }
 
 extend type Query @middleware(checks: ["auth:api"]) {
-  users: [User!]! @all
-  me: User! @auth
+    users: [User!]! @all
+    me: User! @auth
 }
 
 extend type Mutation @middleware(checks: ["auth:api"]) {
-  " Do Admin "
-  doAdmin(id: ID! @globalId(decode: "ID") @eq): User
+    " Do Admin "
+    doAdmin(id: ID! @globalId(decode: "ID") @eq): User
     @can(ability: "update", find: "id")
     @field(resolver: "UserMutator@doAdmin")
 }

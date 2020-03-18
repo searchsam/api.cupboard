@@ -2,14 +2,14 @@
 
 namespace App\Events;
 
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
-
 use App\Order;
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class CreateNewOrder
 {
+
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
@@ -22,20 +22,10 @@ class CreateNewOrder
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param Order $order
      */
     public function __construct(Order $order)
     {
         $this->order = $order;
-    }
-
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return \Illuminate\Broadcasting\Channel|array
-     */
-    public function broadcastOn()
-    {
-        //
     }
 }

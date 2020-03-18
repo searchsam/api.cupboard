@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Request extends Model
 {
+
     /**
      * request status
      *
@@ -20,7 +21,11 @@ class Request extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'user_id', 'order_id', 'description', 'quantity', 'status'
+        'description',
+        'order_id',
+        'quantity',
+        'status',
+        'user_id',
     ];
 
     /**

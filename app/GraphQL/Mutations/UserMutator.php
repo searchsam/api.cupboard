@@ -6,8 +6,9 @@ use App\User;
 
 class UserMutator
 {
+
     /**
-     * @param $root
+     * @param       $root
      * @param array $args
      * @return mixed
      */

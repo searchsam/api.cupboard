@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\{BelongsTo, HasOne, HasMany};
 
 class Order extends Model
 {
+
     /**
      * order status
      *
@@ -19,7 +20,10 @@ class Order extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'name', 'status', 'deadline', 'user_id'
+        'deadline',
+        'name',
+        'status',
+        'user_id'
     ];
 
     /**

@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateRequestsTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,8 +16,6 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('description');
-            $table->integer('quantity');
             $table->tinyInteger('status')
                 ->default('2');
             $table->unsignedBigInteger('order_id');
@@ -31,6 +30,8 @@ class CreateRequestsTable extends Migration
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->string('description');
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

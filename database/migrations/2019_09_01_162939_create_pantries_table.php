@@ -15,7 +15,6 @@ class CreatePantriesTable extends Migration
     {
         Schema::create('pantries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->tinyInteger('existence');
             $table->unsignedBigInteger('request_id');
             $table->foreign('request_id')
                 ->references('id')
@@ -28,6 +27,7 @@ class CreatePantriesTable extends Migration
                 ->on('orders')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->tinyInteger('existence');
             $table->timestamps();
         });
     }

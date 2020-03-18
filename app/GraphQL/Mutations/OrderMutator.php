@@ -2,15 +2,15 @@
 
 namespace App\GraphQL\Mutations;
 
-
-use App\Order;
-use App\Events\ShopOrder;
 use App\Events\CreateNewOrder;
+use App\Events\ShopOrder;
+use App\Order;
 
 class OrderMutator
 {
+
     /**
-     * @param $root
+     * @param       $root
      * @param array $args
      * @return mixed
      */
@@ -20,8 +20,8 @@ class OrderMutator
         $name = $args['name'];
 
         $order = auth()->user()->orders()->create([
-            'name' => $name,
-            'deadline' => $deadline
+            'deadline' => $deadline,
+            'name'     => $name,
         ])->fresh();
 
         event(new CreateNewOrder($order));
@@ -30,25 +30,25 @@ class OrderMutator
     }
 
     /**
-     * @param $root
+     * @param       $root
      * @param array $args
      * @return mixed
      */
     public function update($root, array $args)
     {
-        $orderId = $args['id'];
         $deadline = $args['deadline'];
         $name = $args['name'];
+        $orderId = $args['id'];
 
         return tap(Order::find($orderId))
             ->update([
                 'deadline' => $deadline,
-                'name' => $name
+                'name'     => $name
             ]);
     }
 
     /**
-     * @param $root
+     * @param       $root
      * @param array $args
      * @return mixed
      */

@@ -7,18 +7,19 @@ use Nuwave\Lighthouse\Exceptions\RendersErrorsExtensions;
 
 class CustomException extends Exception implements RendersErrorsExtensions
 {
+
     /**
-    * @var @string
-    */
+     * @var @string
+     */
     private $reason;
 
     /**
-    * CustomException constructor.
-    *
-    * @param  string  $message
-    * @param  string  $reason
-    * @return void
-    */
+     * CustomException constructor.
+     *
+     * @param string $message
+     * @param string $reason
+     * @return void
+     */
     public function __construct(string $message, string $reason)
     {
         parent::__construct($message);
@@ -29,8 +30,8 @@ class CustomException extends Exception implements RendersErrorsExtensions
     /**
      * Returns true when exception message is safe to be displayed to a client.
      *
-     * @api
      * @return bool
+     * @api
      */
     public function isClientSafe(): bool
     {
@@ -42,8 +43,8 @@ class CustomException extends Exception implements RendersErrorsExtensions
      *
      * Value "graphql" is reserved for errors produced by query parsing or validation, do not use it.
      *
-     * @api
      * @return string
+     * @api
      */
     public function getCategory(): string
     {
@@ -59,8 +60,8 @@ class CustomException extends Exception implements RendersErrorsExtensions
     public function extensionsContent(): array
     {
         return [
-            'some' => 'additional information',
             'reason' => $this->reason,
+            'some'   => 'additional information',
         ];
     }
 }

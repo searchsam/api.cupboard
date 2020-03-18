@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateOrdersTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,16 +16,15 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->dateTime('deadline');
-            $table->string('name');
-            $table->tinyInteger('status')
-                ->default('1');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
+            $table->dateTime('deadline');
+            $table->string('name');
+            $table->tinyInteger('status')->default('1');
             $table->timestamps();
         });
     }

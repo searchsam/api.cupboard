@@ -2,16 +2,15 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-
 use App\Mail\NewOrderCreated as Mailable;
 use App\Order;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
 
 class OrderCreated extends Notification implements ShouldQueue
 {
+
     use Queueable;
 
     /**
@@ -24,7 +23,7 @@ class OrderCreated extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      *
-     * @return void
+     * @param Order $order
      */
     public function __construct(Order $order)
     {
@@ -34,7 +33,7 @@ class OrderCreated extends Notification implements ShouldQueue
     /**
      * Get the notification's delivery channels.
      *
-     * @param  mixed  $notifiable
+     * @param mixed $notifiable
      * @return array
      */
     public function via($notifiable)
@@ -45,24 +44,11 @@ class OrderCreated extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
-     * @return App\Mail\NewOrderCreated as Mailable
+     * @param mixed $notifiable
+     * @return Mailable as Mailable
      */
     public function toMail($notifiable)
     {
         return (new Mailable($this->order))->to($notifiable->email);
-    }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
     }
 }

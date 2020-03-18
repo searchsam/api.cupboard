@@ -31,19 +31,19 @@ Order Input Type
 input CreateOrderInput {
     " Order name "
     name: String!
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido." }
-        )
+    @rules(
+        apply: ["required"]
+        messages: { required: "El campo es requerido." }
+    )
     " Order deadline date "
     deadline: Date!
-        @rules(
-            apply: ["required", "date"]
-            messages: {
-                required: "El campo es requerido."
-                date: "No es una fecha valida."
-            }
-        )
+    @rules(
+        apply: ["required", "date"]
+        messages: {
+            required: "El campo es requerido."
+            date: "No es una fecha valida."
+        }
+    )
 }
 
 """
@@ -51,26 +51,26 @@ Update Order Input Type
 """
 input UpdateOrderInput {
     id: ID!
-        @globalId(decode: "ID")
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido." }
-        )
+    @globalId(decode: "ID")
+    @rules(
+        apply: ["required"]
+        messages: { required: "El campo es requerido." }
+    )
     " Order name "
     name: String!
-        @rules(
-            apply: ["required"]
-            messages: { required: "El campo es requerido." }
-        )
+    @rules(
+        apply: ["required"]
+        messages: { required: "El campo es requerido." }
+    )
     " Order deadline date "
     deadline: Date!
-        @rules(
-            apply: ["required", "date"]
-            messages: {
-                required: "El campo es requerido."
-                date: "No es una fecha valida."
-            }
-        )
+    @rules(
+        apply: ["required", "date"]
+        messages: {
+            required: "El campo es requerido."
+            date: "No es una fecha valida."
+        }
+    )
 }
 
 extend type Query {
@@ -79,28 +79,28 @@ extend type Query {
     " Find order dy ID "
     order(
         id: ID!
-            @globalId(decode: "ID")
-            @eq
-            @rules(
-                apply: ["required"]
-                messages: { required: "El campo es requerido" }
-            )
+        @globalId(decode: "ID")
+        @eq
+        @rules(
+            apply: ["required"]
+            messages: { required: "El campo es requerido" }
+        )
     ): Order! @find
 }
 
 extend type Mutation @middleware(checks: ["auth:api"]) {
     " Create order "
     createOrder(input: CreateOrderInput! @spread): Order
-        @can(ability: "create")
-        @field(resolver: "OrderMutator@create")
+    @can(ability: "create")
+    @field(resolver: "OrderMutator@create")
 
     " Update Order "
     updateOrder(input: UpdateOrderInput! @spread): Order
-        @can(ability: "update", find: "id")
-        @field(resolver: "OrderMutator@update")
+    @can(ability: "update", find: "id")
+    @field(resolver: "OrderMutator@update")
 
     " Shop Order "
     shopOrder(id: ID! @globalId(decode: "ID") @eq): Order
-        @can(ability: "update", find: "id")
-        @field(resolver: "OrderMutator@shop")
+    @can(ability: "update", find: "id")
+    @field(resolver: "OrderMutator@shop")
 }

@@ -2,15 +2,13 @@
 
 namespace App\GraphQL\Mutations;
 
-use GraphQL\Type\Definition\ResolveInfo;
-use Nuwave\Lighthouse\Support\Contracts\GraphQLContext;
-
 use App\Pantry;
 
 class PantryMutator
 {
+
     /**
-     * @param $rootValue
+     * @param       $rootValue
      * @param array $args
      * @return mixed
      */
