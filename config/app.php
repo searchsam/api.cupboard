@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Barryvdh\Cors\ServiceProvider::class,
         Nuwave\Lighthouse\Subscriptions\SubscriptionServiceProvider::class,
 
         /*
